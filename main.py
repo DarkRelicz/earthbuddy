@@ -1,26 +1,44 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from wiki_utils import get_wikipedia_summary, extract_parent_company_name
-from yf_utils import get_yfinance_info
+from services.wikidata_utils import get_company_name_from_wikidata
+from services.finance_utils import get_ticker_from_yahoo, get_esg_data_from_yfinance
 
 app = FastAPI()
 
 class BrandRequest(BaseModel):
     brand: str
 
-class TickerRequest(BaseModel):
-    ticker: str
+# Route 1 — resolve ticker
+@app.post("/resolve-ticker")
+def resolve_ticker(req: BrandRequest):
+    company = get_company_name_from_wikidata(req.brand)
+    if not company:
+        return {"brand": req.brand, "error": "Company not found"}
 
-@app.post("/wiki-parent")
-def wiki_parent(request: BrandRequest):
-    summary = get_wikipedia_summary(request.brand)
-    if not summary:
-        return {"brand": request.brand, "error": "Brand page not found on Wikipedia"}
+    ticker = get_ticker_from_yahoo(company)
+    if not ticker:
+        return {"brand": req.brand, "company": company, "error": "Ticker not found"}
 
-    parent_name = extract_parent_company_name(summary)
-    return {"brand": request.brand, "parent_company": parent_name}
+    return {"brand": req.brand, "company": company, "ticker": ticker}
 
-@app.post("/yfinance-data")
-def yfinance_data(request: TickerRequest):
-    data = get_yfinance_info(request.ticker)
-    return data
+# Route 2 — get ESG directly from brand
+@app.post("/brand-esg")
+def brand_esg(req: BrandRequest):
+    company = get_company_name_from_wikidata(req.brand)
+    if not company:
+        return {"brand": req.brand, "error": "Company not found"}
+
+    ticker = get_ticker_from_yahoo(company)
+    if not ticker:
+        return {"brand": req.brand, "company": company, "error": "Ticker not found"}
+
+    esg = get_esg_data_from_yfinance(ticker)
+    if not esg:
+        return {"brand": req.brand, "company": company, "ticker": ticker, "error": "ESG data not found"}
+
+    return {
+        "brand": req.brand,
+        "company": company,
+        "ticker": ticker,
+        "esg": esg
+    }
