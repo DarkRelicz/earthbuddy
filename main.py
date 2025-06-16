@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from services.wikidata_utils import get_company_name_from_wikidata
-from services.finance_utils import get_ticker_from_yahoo, get_esg_data_from_yfinance
+from utils.wikidata_utils import get_company_name_from_wikidata
+from utils.finance_utils import get_ticker_from_yahoo, get_esg_data_from_yfinance
 
 app = FastAPI()
 
