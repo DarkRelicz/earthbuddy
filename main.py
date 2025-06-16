@@ -11,11 +11,12 @@ class BrandRequest(BaseModel):
 # Route 1 — resolve ticker
 @app.post("/resolve-ticker")
 def resolve_ticker(req: BrandRequest):
+    # Try getting ticker via Wikidata API search + property lookup
     ticker = get_ticker_from_wikidata(req.brand)
     if ticker:
         return {"brand": req.brand, "ticker": ticker}
 
-    # fallback to your previous approach
+    # fallback: get company name, then get ticker from Yahoo Finance
     company = get_company_name_from_wikidata(req.brand)
     if not company:
         return {"brand": req.brand, "error": "Company not found"}
