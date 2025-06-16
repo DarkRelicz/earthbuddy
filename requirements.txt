@@ -2,3 +2,6 @@ fastapi
 uvicorn[standard]
 requests
 yfinance
+wikidata
+pandas              # required by yfinance
+numpy               # required by yfinance
