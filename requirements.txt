@@ -1,8 +1,4 @@
-# fastapi
-# uvicorn
-# yfinance
-# pandas
 fastapi
-uvicorn
+uvicorn[standard]
 requests
-pydantic
+yfinance
