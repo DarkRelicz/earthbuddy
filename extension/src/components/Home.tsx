@@ -19,11 +19,16 @@ const Home: React.FC = () => {
             const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
             if (tab?.url) {
                 console.log(tab.url);
+                const url = new URL(tab.url);
+                const domain = url.hostname;
+                console.log(domain);
+
                 // Extract the domain and infer the brand name
-                const domainRegex = /(?:https?:\/\/)?(?:.*\.)?([^.\/]+)\.[^.\/]+(?:\/|$)/;
-                const match = tab.url.match(domainRegex);
-                if (match && match[1]) {
-                    const brand = match[1];
+                const domainRegex = /(?:www\.)?(?:([a-z]{2}\.))?([^.\/]+)\.[^.\/]+\.*/;
+                const match = domain.match(domainRegex);
+                console.log(match);
+                if (match && match[2]) {
+                    const brand = match[2];
                     console.log(match);
                     console.log(brand);
                     setBrandName(brand.charAt(0).toUpperCase() + brand.slice(1)); // Capitalize the first letter
