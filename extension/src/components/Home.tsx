@@ -141,7 +141,7 @@ const Home: React.FC = () => {
                     className={`text-xs font-semibold px-3 py-1 rounded m-2 ${ticker ? 'text-blue-600 hover:underline' : 'text-gray-400 cursor-not-allowed'
                         }`}
                 >
-                    Find Out More
+                    View Sustainability Report
                 </button>
             </div>
 
