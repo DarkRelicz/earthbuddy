@@ -25,7 +25,7 @@ const Home: React.FC = () => {
                 console.log(domain);
 
                 // Extract the domain and infer the brand name
-                const domainRegex = /(?:www\.)?(?:([a-z]{2}\.))?([^.\/]+)\.[^.\/]+\.*/;
+                const domainRegex = /(?:www\.)?(?:([a-z]{2}\.))?(?:shop|corporate\.)?([^.\/]+)\.[^.\/]+\.*/;
                 const match = domain.match(domainRegex);
                 console.log(match);
                 if (match && match[2]) {
