@@ -1,6 +1,8 @@
 # EarthBuddy
 
-The EarthBuddy Chrome Extension helps users make informed, sustainable choices by providing Environmental, Social, and Governance (ESG) risk ratings for brands.
+The **EarthBuddy Chrome** Extension helps users make informed, sustainable choices by providing Environmental, Social, and Governance (ESG) risk ratings for brands.
+
+<img width="372" alt="image" src="https://github.com/user-attachments/assets/f2c8a20d-8ef6-40e1-9e94-05a8a93e9495" />
 
 ## Key Features
 
@@ -16,7 +18,7 @@ To build the web extension
 2. cd to /extension
 3. Run npm install to install node_modules folder
 4. Run`npm run build` to build the extension
-5. /dist folder should be updated
+5. At this point, you should see /dist folder been updated
 
 ## Usage
 
@@ -25,19 +27,74 @@ To load web extension
 2. Enable developer mode, should be top right corner
 3. Click load unpacked and select dist folder
 
+## Tech Stack
+
+| Frontend               | Backend           | APIs & Services        |
+|------------------------|--------------------|-------------------------|
+| React + TypeScript     | Flask (Python)     | Google Gemini API       |
+| TailwindCSS            | Render (hosted)    | yFinance (ESG Scores)   |
+| Chrome Extension APIs  |                    | Brandfetch (logos)      |
+
+---
+
+### 📁 Folder Structure
+
+```text
+.
+├── client/                      # Frontend (Chrome extension)
+│   ├── assets/                  # Static assets (icons, images)
+│   ├── components/              # Reusable UI components
+│   ├── atoms/                   # Utility functions (e.g., Rating, Functions)
+│   ├── popup.tsx                # Main popup component
+│   ├── App.tsx                  # Extension wrapper logic
+│   ├── index.html               # HTML entry point
+│   └── manifest.json            # Chrome extension configuration
+│
+├── server/                      # Backend (Flask + Gemini + ESG)
+│   ├── app.py                   # Main Flask server
+│   └── utils/                   # Utility modules
+│       ├── getLogo.py           # Fetch brand logos using Brandfetch
+│       └── yfinance.py          # Fetch ESG scores via yfinance
+│
+├── .env.example                 # Environment variable template
+├── requirements.txt             # Python backend dependencies
+├── README.md                    # Project documentation
+└── LICENSE                      # (Optional) Project license
+```
+
+### Example ESG API Call
+
+```http
+GET /get_ticker?brand_name=Nike&esg_score=18.6
+```
+### Successful Response from Server
+```
+{
+  "brand_name": "Nike",
+  "alternatives": [
+    {
+      "brand_name": "Adidas",
+      "ticker": "ADDYY",
+      "esg_score": 15.2,
+      "homepage": "https://www.adidas.com",
+      "image_url": "https://cdn.brandfetch.io/adidas.com/logo"
+    }
+```
+
 ## Privacy and Data Usage
 
 EarthBuddy does not collect or store any personal data. All ESG ratings and brand comparisons are processed locally within your browser to ensure user privacy.
 
 ## Challenges & Learning Points
 
-- Tickers would not always be accurate
+- Tickers would not always be accurate due to similar company names
 - Data Gaps in free ESG sources required fallback logic
 
 ## Future Plans
 
 - Add support for more browsers (e.g., Firefox, Safari).
 - Allow users to contribute brand feedback and sustainability reviews.
+- Caching to improve speed of which ESG score are being extracted
 
 ## Contributing
 
