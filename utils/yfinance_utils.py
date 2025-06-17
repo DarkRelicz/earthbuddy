@@ -16,6 +16,7 @@ def get_esg_scores(ticker: str):
         esg_data = stock.sustainability
         if esg_data is None:
             return None
-        return esg_data.to_dict()  # Convert pandas DataFrame to dictionary
+        esg_dict = esg_data.to_dict()  # Convert pandas DataFrame to dictionary
+        return esg_dict.get("totalEsg") # Return the total ESG score
     except Exception as e:
         raise Exception(f"Failed to fetch ESG scores for ticker '{ticker}': {e}")
