@@ -1,7 +1,3 @@
-fastapi
-uvicorn[standard]
-requests
-yfinance
-wikidata
-pandas              # required by yfinance
-numpy               # required by yfinance
+flask                # For creating the web API
+google-genai         # For interacting with Google Generative AI
+flask-cors          # For handling CORS in Flask
