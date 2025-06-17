@@ -63,8 +63,7 @@ const Home: React.FC = () => {
             fetchESGScores();
         }
     }, [brandName]);
-
-
+ 
     // Fetch ticker from backend
     const fetchTicker = async () => {
         setError(null); // Reset error
@@ -97,6 +96,11 @@ const Home: React.FC = () => {
         }
     };
 
+    useEffect(() => {
+        if (brandName) {
+            fetchTicker();
+        }
+    }, [brandName]);
 
     return (
         <PopupTemplate>
