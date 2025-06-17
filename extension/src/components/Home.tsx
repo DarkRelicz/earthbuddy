@@ -127,7 +127,7 @@ const Home: React.FC = () => {
     return (
         <PopupTemplate>
             <div className='flex flex-row items-center justify-center inline-flex mb-6'>
-                <img src='img/image.png' alt="earthbuddy logo" className="w-10 h-10 object-contain p-1" />
+                <img src='img/EarthBuddyLogo.png' alt="earthbuddy logo" className="w-10 h-10 object-contain p-1" />
                 <h2 className="text-lg font-semibold text-[#12364A]">Sustainability Report</h2>
             </div>
 
