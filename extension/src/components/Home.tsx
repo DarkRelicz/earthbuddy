@@ -84,6 +84,7 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         if (brandName) {
+            fetchTicker();
             fetchESGScores();
         }
     }, [brandName]);
