@@ -10,10 +10,9 @@ def fetch_image_url(brand_name):
     Returns:
         str: The logo icon URL or a fallback message if unavailable.
     """
-    API_KEY = "your_brandfetch_api_key"  # Replace with your actual Brandfetch API key
-    url = f"https://api.brandfetch.io/v2/search/{brand_name}"
-    headers = {"Authorization": f"Bearer {API_KEY}"}
-    response = requests.get(url, headers=headers)
+    brand_name = brand_name.lower() # Format brand name for URL
+    return f"https://cdn.brandfetch.io/{brand_name}.com?c=1idixjeVit8iMxTe5MU"
+    response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
         if len(data) > 0 and "icon" in data[0]:  # Check if the first brand has an icon
