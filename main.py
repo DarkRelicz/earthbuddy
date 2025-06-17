@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from google import genai
-from utils.yfinance_utils import get_esg_scores
+from utils.yfinance import get_esg_scores
+from utils.getlogo import fetch_image_url
 
 app = Flask(__name__)
 
@@ -24,19 +25,27 @@ def get_ticker():
     # Fetch ESG score
     try:
         esg_scores = get_esg_scores(ticker)
+        image_url = fetch_image_url(brand_name)  # Dynamically fetch image URL
         if esg_scores is None:
-            return jsonify({"brand_name": brand_name, "ticker": ticker, "esg_scores": "No ESG data available"})
+            return jsonify({
+                "brand_name": brand_name,
+                "ticker": ticker,
+                "esg_scores": "No ESG data available",
+                "grade": None,
+                "image_url": image_url
+            })
         
         # Normalize ESG score to 1 to 5 scale
         grade = round((esg_scores / 40) * 5)
-        if grade > 5:
-            normalized_esg = 5
-        elif grade < 1:
-            normalized_esg = 1
-        else:
-            normalized_esg = grade
-            
-        return jsonify({"brand_name": brand_name, "ticker": ticker, "esg_scores": esg_scores, "grade": normalized_esg})
+        normalized_esg = max(1, min(5, grade))  # Ensure grade is between 1 and 5
+
+        return jsonify({
+            "brand_name": brand_name,
+            "ticker": ticker,
+            "esg_scores": esg_scores,
+            "grade": normalized_esg,
+            "image_url": image_url
+        })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
