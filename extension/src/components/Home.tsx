@@ -127,7 +127,7 @@ const Home: React.FC = () => {
     return (
         <PopupTemplate>
             <div className='flex flex-row items-center justify-center inline-flex mb-6'>
-                <img src='icons/icon-128.png' alt="earthbuddy logo" className="w-10 mr-4" />
+                <img src='img/image.png' alt="earthbuddy logo" className="w-10 h-10 object-contain p-1" />
                 <h2 className="text-lg font-semibold text-[#12364A]">Sustainability Report</h2>
             </div>
 
@@ -139,7 +139,7 @@ const Home: React.FC = () => {
                     </>
                 ) :
                     (<>
-                        <img src={brandLogo} alt="earthbuddy logo" className="w-20 h-20" />
+                        <img src={brandLogo} alt="earthbuddy logo" className="w-20 h-20 object-contain" />
                         <div className='m-4 text-4xl font-bold' style={{ color: colourOf(esgScore) }} >{esgScore}</div>
                     </>
                     )}
@@ -187,6 +187,11 @@ const Home: React.FC = () => {
 
                     return (
                         <div key={index} className="flex flex-col items-center">
+                            <img
+                                src={brand.image_url}
+                                alt={`${brand.brand_name} logo`}
+                                className="w-6 h-6 mb-1 rounded-full object-contain"
+                            />
                         <Rating rating={brand.esg_score} size={10} />
                         </div>
                     );
@@ -215,6 +220,11 @@ const Home: React.FC = () => {
                         alternatives.map((brand, index) => (
                             <div key={index} className="flex items-start space-x-4">
                                 <div className='flex flex-col items-center'>
+                                    <img
+                                        src={brand.image_url}
+                                        alt={`${brand.brand_name} logo`}
+                                        className="w-8 h-8 mb-1 rounded-full object-contain"
+                                    />
                                     <Rating rating={brand.esg_score} size={6} />
                                 </div>
                                 <div className="text-left text-sm">

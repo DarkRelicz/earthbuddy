@@ -9,7 +9,6 @@ interface RatingProps {
 function Rating({ rating, size }: RatingProps) {
     return (
         <>
-            <Globe className={`w-${size} h-${size} mr-2`} />
             <span className='text-lg mt-1 font-bold' style={{ color: colourOf(rating) }}>{rating} </span>
         </>
     )
