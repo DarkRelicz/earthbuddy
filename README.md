@@ -1,12 +1,13 @@
 # EarthBuddy
 
-EarthBuddy is a project aimed at promoting environmental awareness and sustainability through technology.
+The EarthBuddy Chrome Extension helps users make informed, sustainable choices by providing Environmental, Social, and Governance (ESG) ratings for brands.
 
-## Features
+## Key Features
 
-- **Eco-Friendly Tips**: Daily tips to help users adopt sustainable practices.
-- **Carbon Footprint Tracker**: Track and reduce your carbon footprint.
-- **Community Challenges**: Participate in challenges to make a positive environmental impact.
+- Displays the ESG rating of the brand.
+- Suggests alternative brands with better ESG ratings.
+- Encourages users to choose environmentally and socially responsible options.
+- User-Friendly: User-Centered Design
 
 ## Installation
 
@@ -23,6 +24,16 @@ To load web extension
 1. Under browser settings look for manage extensions (for chromium browsers)
 2. Enable developer mode, should be top right corner
 3. Click load unpacked and select dist folder
+
+## Privacy and Data Usage
+
+EarthBuddy does not collect or store any personal data. All ESG ratings and brand comparisons are processed locally within your browser to ensure user privacy.
+
+## Future Plans
+
+- Add support for more browsers (e.g., Firefox, Safari).
+- Include detailed ESG breakdowns for each brand.
+- Allow users to suggest brands for ESG evaluation.
 
 ## Contributing
 
