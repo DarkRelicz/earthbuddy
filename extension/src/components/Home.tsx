@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { colourOf } from './atoms/Functions';
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { getResponseForGivenPrompt } from "../services/AI-prompt";
 
 import PopupTemplate from './template/PopupTemplate';
 import Rating from './atoms/Rating';
@@ -10,6 +11,7 @@ const Home: React.FC = () => {
     const [brandName, setBrandName] = useState<string>(''); // Input for brand name
     const [ticker, setTicker] = useState<string | null>(null); // Ticker result
     const [error, setError] = useState<string | null>(null); // Error message
+    const [response, setResponse] = useState<string | null>(null);
 
     // Retrieve current URL and infer brand name
     useEffect(() => {
@@ -66,6 +68,12 @@ const Home: React.FC = () => {
             }
         }
     };
+
+    const handleClick = async () => {
+        const result = await getResponseForGivenPrompt();
+        // setResponse(result);
+        // console.log(result);
+    }
 
     return (
         <PopupTemplate>
@@ -131,6 +139,18 @@ const Home: React.FC = () => {
                     ))}
                 </div>
             )}
+
+            <div className="">
+                <button
+                    onClick={handleClick}
+                    className="px-4 py-2 bg-blue-600 text-white rounded"
+                >
+                    Ask Gemini
+                </button>
+                {response && (
+                    <div className="mt-4 p-2 bg-gray-100 rounded text-sm">{response}</div>
+                )}
+            </div>
         </PopupTemplate>
     );
 };
