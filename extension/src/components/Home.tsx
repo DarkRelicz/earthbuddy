@@ -62,20 +62,20 @@ const Home: React.FC = () => {
     };
 
     const fetchAlternatives = async () => {
-    if (!brandName || esgScore == null) return;
+        if (!brandName || esgScore == null) return;
 
-    try {
-        const response = await fetch(`https://gemini-connect.onrender.com/get_ticker?brand_name=${encodeURIComponent(brandName)}&esg_score=${esgScore}`);
-        if (!response.ok) throw new Error("Failed to fetch alternatives");
+        try {
+            const response = await fetch(`https://gemini-connect.onrender.com/get_ticker?brand_name=${encodeURIComponent(brandName)}&esg_score=${esgScore}`);
+            if (!response.ok) throw new Error("Failed to fetch alternatives");
 
-        const data = await response.json();
-        setAlternatives(data.alternatives || []);
-        console.log(alternatives)
-    } catch (error) {
-        console.error("Error fetching Gemini alternatives:", error);
-        setAlternatives([])
-    }
-};
+            const data = await response.json();
+            setAlternatives(data.alternatives || []);
+            console.log(alternatives)
+        } catch (error) {
+            console.error("Error fetching Gemini alternatives:", error);
+            setAlternatives([])
+        }
+    };
 
 
     useEffect(() => {
@@ -90,9 +90,9 @@ const Home: React.FC = () => {
     }, [brandName]);
 
     useEffect(() => {
-    if (typeof esgScore === "number" && esgScore >= 0) {
-        fetchAlternatives();
-    }
+        if (typeof esgScore === "number" && esgScore >= 0) {
+            fetchAlternatives();
+        }
     }, [esgScore]);
 
     // Fetch ticker from backend
@@ -127,41 +127,41 @@ const Home: React.FC = () => {
     return (
         <PopupTemplate>
             <div className='flex flex-row items-center justify-center inline-flex mb-6'>
-                <img src='icons/icon-128.png' alt="earthbuddy logo" className="w-10 mr-4" />
+                <img src='img/EarthBuddyLogo.png' alt="earthbuddy logo" className="w-11 mr-4" />
                 <h2 className="text-lg font-semibold text-[#12364A]">Sustainability Report</h2>
             </div>
 
-            <div className="flex justify-between mb-3 items-center">
+            <div className="flex justify-between mb-1 items-center">
                 {esgScore == null ? (
                     <>
-                        <img src='icons/icon-128.png' alt="earthbuddy logo" className="w-20 h-20" />
+                        <img src='img/EarthBuddyLogo.png' alt="earthbuddy logo" className="w-20 h-20" />
                         <div className='m-4 text-4xl font-semibold text-[#8B959B]'>Loading...</div>
                     </>
                 ) :
                     (<>
-                        <img src={brandLogo} alt="earthbuddy logo" className="w-20 h-20" />
+                        <img src={brandLogo} alt="brand logo" className="w-20 h-20 object-contain" />
                         <div className='m-4 text-4xl font-bold' style={{ color: colourOf(esgScore) }} >{esgScore}</div>
                     </>
                     )}
-                {/* Right: Button */}
-                <button
-                    disabled={!ticker}
-                    onClick={() =>
-                        ticker && window.open(`https://www.responsibilityreports.com/Companies?search=${ticker}`, '_blank')
-                    }
-                    className={`text-xs font-semibold px-3 py-1 rounded m-2 ${ticker ? 'text-blue-600 hover:underline' : 'text-gray-400 cursor-not-allowed'
-                        }`}
-                >
-                    Find Out More
-                </button>
             </div>
+
+            <button
+                disabled={!ticker}
+                onClick={() =>
+                    ticker && window.open(`https://www.responsibilityreports.com/Companies?search=${ticker}`, '_blank')
+                }
+                className={`text-[#486BF3] text-s font-semibold px-3 py-1 rounded m-2 ${ticker ? 'text-blue-600 hover:underline' : 'text-gray-400 cursor-not-allowed'
+                    }`}
+            >
+                View detailed Sustainability Report
+            </button>
 
             <button
                 onClick={() => setMoreInformation(!moreInformation)}
                 className="text-[#486BF3] font-semibold text-sm flex items-center"
             >
                 {moreInformation ? <ChevronUp size={16} className="mr-1" /> : <ChevronDown size={16} className="mr-1" />}
-                More information
+                About the score
             </button>
 
             {moreInformation && (
@@ -177,60 +177,58 @@ const Home: React.FC = () => {
                 </div>
             )}
 
-            <h2 className="text-lg font-semibold text-[#8B959B] mb-2 mt-4">How other brands' doing...</h2>
+            {alternatives.length == 0 ? (
+                <div className='m-4 text-2xl font-semibold text-[#8B959B]'>Loading alternatives...</div>
+            ) : (
+                <>
+                    <h2 className="text-lg font-semibold text-[#8B959B] mb-2 mt-4">How other brands' doing...</h2>
 
-            <div className="flex space-x-10 mb-4 mt-4">
-                {alternatives.length > 0 ? (
-                    alternatives.map((brand, index) => {
-                    // Convert ESG score (lower is better) to 1–5 star scale (invert scale)
-                    // const rating = 5 - Math.min(Math.max(brand.esg_score / 10, 0), 5); // Normalize to 0–5, then invert
-
-                    return (
-                        <div key={index} className="flex flex-col items-center">
-                        <Rating rating={brand.esg_score} size={10} />
-                        </div>
-                    );
-                    })
-                ) : (
-                    // Optional fallback while waiting
-                    [1, 2, 3].map((_, index) => (
-                    <div key={index} className="flex flex-col items-center text-gray-300">
-                        <Rating rating={-1} size={10} />
+                    <div className="flex space-x-10 mb-4 mt-4">
+                        {alternatives.length > 0 && (
+                            alternatives.map((brand, index) => {
+                                return (
+                                    <div key={index} className="flex flex-col items-center">
+                                        <Rating rating={brand.esg_score} imageUrl={brand.image_url} size={60}/>
+                                    </div>
+                                );
+                            })
+                        )}
                     </div>
-                    ))
-                )}
-            </div>
 
-            <button
-                onClick={() => setShowDetails(!showDetails)}
-                className="text-[#486BF3] font-semibold text-sm flex items-center"
-            >
-                {showDetails ? <ChevronUp size={16} className="mr-1" /> : <ChevronDown size={16} className="mr-1" />}
-                Additional details
-            </button>
+                    <button
+                        onClick={() => setShowDetails(!showDetails)}
+                        className="text-[#486BF3] font-semibold text-sm flex items-center"
+                    >
+                        {showDetails ? <ChevronUp size={16} className="mr-1" /> : <ChevronDown size={16} className="mr-1" />}
+                        Additional details
+                    </button>
 
-            {showDetails && (
-                <div className="mt-4 space-y-4">
-                    {alternatives.length > 0 ? (
-                        alternatives.map((brand, index) => (
-                            <div key={index} className="flex items-start space-x-4">
-                                <div className='flex flex-col items-center'>
-                                    <Rating rating={brand.esg_score} size={6} />
+                    {showDetails && (
+                        <div className="mt-4">
+                            {alternatives.length > 0 ? (
+                                <div className='space-y-4'>
+                                    {alternatives.map((brand, index) => (
+                                        <div key={index} className="flex items-start">
+                                            <div className='w-1/4 pr-4 flex flex-col items-center justify-center'>
+                                                <Rating rating={brand.esg_score} imageUrl={brand.image_url} size={44} />
+                                            </div>
+                                            <div className="w-3/4 text-left text-sm">
+                                                <p className="text-[#8B959B] mb-1">
+                                                    <strong>{brand.brand_name}</strong> - ESG: {brand.esg_score}
+                                                </p>
+                                                <a href={brand.homepage} target="_blank" rel="noreferrer" className="text-[#486BF3] font-semibold text-sm block mt-1">
+                                                    Visit Homepage →
+                                                </a>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
-                                <div className="text-left text-sm">
-                                    <p className="text-[#8B959B]">
-                                        <strong>{brand.brand_name}</strong> – ESG: {brand.esg_score}
-                                    </p>
-                                    <a href={brand.homepage} target="_blank" rel="noreferrer" className="text-[#486BF3] font-semibold text-sm block mt-1">
-                                        Visit Homepage →
-                                    </a>
-                                </div>
-                            </div>
-                        ))
-                    ) : (
-                        <p className="text-sm text-gray-500">No alternatives found yet.</p>
+                            ) : (
+                                <p className="text-sm text-gray-500">No alternatives found yet.</p>
+                            )}
+                        </div>
                     )}
-                </div>
+                </>
             )}
         </PopupTemplate>
     );
