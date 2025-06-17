@@ -36,7 +36,7 @@ def get_ticker():
             })
         
         # Normalize ESG score to 1 to 5 scale
-        grade = round((esg_scores / 40) * 5)
+        grade = int((esg_scores / 41) * 5)
         normalized_esg = max(1, min(5, grade))  # Ensure grade is between 1 and 5
 
         return jsonify({
