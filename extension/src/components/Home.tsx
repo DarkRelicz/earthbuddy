@@ -70,6 +70,21 @@ const Home: React.FC = () => {
             <div className="flex justify-between mb-4">
                 <img src='' alt="earthbuddy logo" className="w-10 mb-1 m-4" />
                 <div className='m-4 text-4xl font-bold' style={{ color: colourOf(4) }} >4 / 5</div>
+                <button
+                  disabled={!ticker}
+                  onClick={() => {
+                    if (ticker) {
+                      window.open(`https://www.responsibilityreports.com/Companies?search=${ticker}`, '_blank');
+                    }
+                  }}
+                  className={`px-4 py-2 rounded text-sm font-medium ${
+                    ticker
+                      ? 'bg-gray-200 hover:bg-gray-300 text-black'
+                      : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  }`}
+                >
+                  Find Out More 
+                </button>
             </div>
 
             <h2 className="text-lg font-semibold text-[#8B959B] mb-2">How other brands' doing...</h2>
