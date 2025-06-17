@@ -78,7 +78,8 @@ GET /get_ticker?brand_name=Nike&esg_score=18.6
       "esg_score": 15.2,
       "homepage": "https://www.adidas.com",
       "image_url": "https://cdn.brandfetch.io/adidas.com/logo"
-    }
+    }]
+}
 ```
 
 ## Privacy and Data Usage
