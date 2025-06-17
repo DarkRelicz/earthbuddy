@@ -29,11 +29,15 @@ To load web extension
 
 EarthBuddy does not collect or store any personal data. All ESG ratings and brand comparisons are processed locally within your browser to ensure user privacy.
 
+## Challenges & Learning Points
+
+- Tickers would not always be accurate
+- Data Gaps in free ESG sources required fallback logic
+
 ## Future Plans
 
 - Add support for more browsers (e.g., Firefox, Safari).
-- Include detailed ESG breakdowns for each brand.
-- Allow users to suggest brands for ESG evaluation.
+- Allow users to contribute brand feedback and sustainability reviews.
 
 ## Contributing
 
