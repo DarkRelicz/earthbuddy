@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { colourOf } from './atoms/Functions';
 import { ChevronDown, ChevronUp } from "lucide-react";
 
+import ESGRiskBar from './more-information-component/ESGRiskBar';
 import PopupTemplate from './template/PopupTemplate';
 import Rating from './atoms/Rating';
 
@@ -9,6 +10,7 @@ import Rating from './atoms/Rating';
 const Home: React.FC = () => {
     const [currentUrl, setCurrentUrl] = useState<string>('');
     const [showDetails, setShowDetails] = useState(false);
+    const [moreInformation, setMoreInformation] = useState(false);
 
     // retrieve current url
     useEffect(() => {
@@ -37,12 +39,27 @@ const Home: React.FC = () => {
 
     return (
         <PopupTemplate>
-            <div className="flex justify-between mb-4">
-                <img src='' alt="earthbuddy logo" className="w-10 mb-1 m-4" />
+            <div className="flex justify-between mb-3">
+                <img src='/img/EarthBuddyLogo.png' alt="earthbuddy logo" className="w-20 h-20" />
                 <div className='m-4 text-4xl font-bold' style={{ color: colourOf(mockCurrData.rating) }} >{mockCurrData.rating} / 5</div>
             </div>
 
-            <h2 className="text-lg font-semibold text-[#8B959B] mb-2">How other brands' doing...</h2>
+            <button
+                onClick={() => setMoreInformation(!moreInformation)}
+                className="text-[#486BF3] font-semibold text-sm flex items-center"
+            >
+                {moreInformation ? <ChevronUp size={16} className="mr-1" /> : <ChevronDown size={16} className="mr-1" />}
+                More information
+            </button>
+
+            {moreInformation && (
+                <div>
+                    <ESGRiskBar score={10} />  {/* TODO: add in actual ESG value */}
+                    These scores measure a company's exposure to ESG risks and how well it's managing them. The lower the score, the better the sustainability risk profile.
+                </div>
+            )}
+
+            <h2 className="text-lg font-semibold text-[#8B959B] mb-2 mt-4">How other brands' doing...</h2>
 
             <div className="flex space-x-10 mb-4 mt-4">
                 {brands.map((brand, index) => (
