@@ -10,8 +10,8 @@ const Home: React.FC = () => {
     const [moreInformation, setMoreInformation] = useState(false);
     const [brandName, setBrandName] = useState<string>(''); // Input for brand name
     const [ticker, setTicker] = useState<string | null>(null); // Ticker result
-    const [error, setError] = useState<string | null>(null); // Error message
     const [esgScore, setEsgScore] = useState<number | null>(null);
+    const [brandLogo, setBrandLogo] = useState<string>("");
 
     // Retrieve current URL and infer brand name
     const getBrandName = async () => {
@@ -48,34 +48,21 @@ const Home: React.FC = () => {
 
             const data = await response.json();
             setEsgScore(data.esg_scores);
+            setBrandLogo(data.image_url);
         } catch (err) {
             console.error(err);
             setEsgScore(-1);
         }
     };
 
-    useEffect(() => {
-        getBrandName();
-    }, []);
-
-    useEffect(() => {
-        if (brandName) {
-            fetchESGScores();
-        }
-    }, [brandName]);
-
-
     // Fetch ticker from backend
     const fetchTicker = async () => {
-        setError(null); // Reset error
         setTicker(null); // Reset ticker
 
-        if (!brandName) {
-            setError('Please enter a brand name.');
-            return;
-        }
-
         try {
+            if (!brandName) {
+                throw new Error("No brandname");
+            }
             // Use the Render backend URL
             const response = await fetch(`https://earthbuddy.onrender.com/get_ticker?brand_name=${encodeURIComponent(brandName)}`);
             if (!response.ok) {
@@ -86,26 +73,48 @@ const Home: React.FC = () => {
             if (data.ticker) {
                 setTicker(data.ticker);
             } else {
-                setError('No ticker symbol found.');
+                throw new Error('No ticker symbol found.');
             }
         } catch (err) {
             if (err instanceof Error) {
-                setError(`Error: ${err.message}`);
+                console.error(`Error: ${err.message}`);
             } else {
-                setError('An unknown error occurred.');
+                console.error('An unknown error occurred.');
             }
         }
     };
 
+    useEffect(() => {
+        getBrandName();
+    }, []);
+
+    useEffect(() => {
+        if (brandName) {
+            fetchTicker();
+            fetchESGScores();
+        }
+    }, [brandName]);
+
 
     return (
         <PopupTemplate>
+            <div className='flex flex-row items-center justify-center px-6 py-8 text-center'>
+                <img src='img/EarthBuddyLogo.png' alt="earthbuddy logo" className="w-10 mr-4" />
+                <h2 className="text-lg font-semibold text-[#12364A] mb-6">Sustainability Report</h2>
+            </div>
+
             <div className="flex justify-between mb-3">
-                <img src='/img/EarthBuddyLogo.png' alt="earthbuddy logo" className="w-20 h-20" />
                 {esgScore == null ? (
-                    <div className='m-4 text-4xl font-semibold text-[#8B959B]'>Loading...</div>
+                    <>
+                        <img src='img/EarthBuddyLogo.png' alt="earthbuddy logo" className="w-20 h-20" />
+                        <div className='m-4 text-4xl font-semibold text-[#8B959B]'>Loading...</div>
+                    </>
                 ) :
-                    (<div className='m-4 text-4xl font-bold' style={{ color: colourOf(esgScore) }} >{esgScore}</div>)}
+                    (<>
+                        <img src={brandLogo} alt="earthbuddy logo" className="w-20 h-20" />
+                        <div className='m-4 text-4xl font-bold' style={{ color: colourOf(esgScore) }} >{esgScore}</div>
+                    </>
+                    )}
                 {/* Right: Button */}
                 <button
                     disabled={!ticker}
@@ -131,6 +140,12 @@ const Home: React.FC = () => {
                 <div>
                     <ESGRiskBar score={esgScore} />
                     These scores measure a company's exposure to ESG risks and how well it's managing them. The lower the score, the better the sustainability risk profile.
+                    <button
+                        onClick={() => window.open('https://www.home.saxo/en-sg/content/articles/esg/how-to-read-an-esg-rating-25042024', '_blank')}
+                        className="text-[#486BF3] font-semibold text-sm block w-fit mx-auto mt-1"
+                    >
+                        Find out more about ESG!
+                    </button>
                 </div>
             )}
 
@@ -144,27 +159,6 @@ const Home: React.FC = () => {
                     </div>
                 ))}
             </div>
-
-            {/* Input for brand name */}
-            <div className="mb-4">
-                <input
-                    type="text"
-                    value={brandName}
-                    onChange={(e) => setBrandName(e.target.value)}
-                    placeholder="Enter brand name"
-                    className="border border-gray-300 rounded p-2 w-full"
-                />
-                <button
-                    onClick={fetchTicker}
-                    className="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-2 w-full"
-                >
-                    Find Ticker
-                </button>
-            </div>
-
-            {/* Display ticker or error */}
-            {ticker && <div className="text-green-600 font-semibold">Ticker Symbol: {ticker}</div>}
-            {error && <div className="text-red-600 font-semibold">{error}</div>}
 
             <button
                 onClick={() => setShowDetails(!showDetails)}
