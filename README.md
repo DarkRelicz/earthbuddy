@@ -37,7 +37,7 @@ To load web extension
 
 ---
 
-### 📁 Folder Structure
+### Folder Structure
 
 ```text
 .
