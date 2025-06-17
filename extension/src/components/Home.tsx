@@ -103,15 +103,15 @@ const Home: React.FC = () => {
 
     return (
         <PopupTemplate>
-            <div className='flex flex-row items-center justify-center px-6 py-8 text-center'>
-                <img src='img/EarthBuddyLogo.png' alt="earthbuddy logo" className="w-10 mr-4" />
-                <h2 className="text-lg font-semibold text-[#12364A] mb-6">Sustainability Report</h2>
+            <div className='flex flex-row items-center justify-center inline-flex mb-6'>
+                <img src='icons/icon-128.png' alt="earthbuddy logo" className="w-10 mr-4" />
+                <h2 className="text-lg font-semibold text-[#12364A]">Sustainability Report</h2>
             </div>
 
             <div className="flex justify-between mb-3 items-center">
                 {esgScore == null ? (
                     <>
-                        <img src='img/EarthBuddyLogo.png' alt="earthbuddy logo" className="w-20 h-20" />
+                        <img src='icons/icon-128.png' alt="earthbuddy logo" className="w-20 h-20" />
                         <div className='m-4 text-4xl font-semibold text-[#8B959B]'>Loading...</div>
                     </>
                 ) :
