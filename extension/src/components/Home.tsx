@@ -1,122 +1,136 @@
 import React, { useState, useEffect } from 'react';
-import PopupTemplate from './template/PopupTemplate';
-import Button from './atoms/Button';
-import { scanURL } from '../services/phish'; 
+import { colourOf } from './atoms/Functions';
+import { ChevronDown, ChevronUp } from "lucide-react";
 
-type ScanStatus = 'idle' | 'scanning' | 'completed' | 'error' ;
+import PopupTemplate from './template/PopupTemplate';
+import Rating from './atoms/Rating';
 
 const Home: React.FC = () => {
-  const [currentUrl, setCurrentUrl] = useState<string>('');
-  const [scanStatus, setScanStatus] = useState<ScanStatus>('idle');
-  const [scanResult, setScanResult] = useState<any>(null);
+    const [currentUrl, setCurrentUrl] = useState<string>('');
+    const [showDetails, setShowDetails] = useState(false);
+    const [brandName, setBrandName] = useState<string>(''); // Input for brand name
+    const [ticker, setTicker] = useState<string | null>(null); // Ticker result
+    const [error, setError] = useState<string | null>(null); // Error message
 
-  useEffect(() => {
-    const getCurrentUrl = async () => {
-      try {
-        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-        if (tab?.url) {
-          setCurrentUrl(tab.url);
+    // Retrieve current URL and infer brand name
+    useEffect(() => {
+        const getCurrentUrl = async () => {
+            try {
+                const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+                if (tab?.url) {
+                    setCurrentUrl(tab.url);
+
+                    // Extract the domain and infer the brand name
+                    const url = new URL(tab.url);
+                    const domain = url.hostname.replace('www.', ''); // Remove 'www.'
+                    const brand = domain.split('.')[0]; // Get the main part of the domain
+                    setBrandName(brand.charAt(0).toUpperCase() + brand.slice(1)); // Capitalize the first letter
+                }
+            } catch (err) {
+                console.error('Error getting URL:', err);
+            }
+        };
+        getCurrentUrl();
+    }, []);
+
+    // Fetch ticker from backend
+    const fetchTicker = async () => {
+        setError(null); // Reset error
+        setTicker(null); // Reset ticker
+
+        if (!brandName) {
+            setError('Please enter a brand name.');
+            return;
         }
-      } catch (err) {
-        console.error('Error getting URL:', err);
-      }
+
+        try {
+            // Use the Render backend URL
+            const response = await fetch(`https://earthbuddy.onrender.com/get_ticker?brand_name=${encodeURIComponent(brandName)}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch ticker symbol.');
+            }
+
+            const data = await response.json();
+            if (data.ticker) {
+                setTicker(data.ticker);
+            } else {
+                setError('No ticker symbol found.');
+            }
+        } catch (err) {
+            if (err instanceof Error) {
+                setError(`Error: ${err.message}`);
+            } else {
+                setError('An unknown error occurred.');
+            }
+        }
     };
-    getCurrentUrl();
-  }, []);
 
-  const handleUrlScan = async () => {
-    setScanStatus('scanning');
-
-    try {
-      const result = await scanURL(currentUrl);
-      setScanResult(result);
-      setScanStatus('completed');
-    } catch (err) {
-      setScanStatus('error');
-      console.error(err);
-    }
-  };
-
-  const resetScanner = () => {
-    setScanStatus('idle');
-    setScanResult(null);
-  };
-
-  return (
-    <PopupTemplate>
-      <img src='' alt="Phishtank logo" className="w-10 mb-1"/>
-      <h2 className="text-lg font-semibold text-[#12364A] mb-6">Scan URL</h2>
-
-      {scanStatus === 'idle' && (
-        <div className="flex-1 flex flex-col justify-center">
-          <div className="bg-gray-100 p-3 rounded-lg mb-6">
-            <p className="text-sm font-medium mb-1">Current URL:</p>
-            <p className="text-xs break-all">{currentUrl || 'Loading URL...'}</p>
-          </div>
-          <Button onClickCallback={handleUrlScan} disabled={!currentUrl} title='Scan' />
-        </div>
-      )}
-
-      {scanStatus === 'scanning' && (
-        <div className="flex-1 flex flex-col items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#4F7BFF] mb-4 font-sans"></div>
-          <p>Scanning URL...</p>
-          <p className="text-sm text-gray-500 mt-2">This may take 10-30 seconds</p>
-        </div>
-      )}
-
-      {scanStatus === 'completed' && scanResult && (
-        <div className="flex-1 flex flex-col">
-          <div className={`p-4 rounded-lg mb-6 ${scanResult.verdicts.overall.malicious ?
-              'bg-red-100 border border-red-400 text-red-700' :
-              'bg-green-100 border border-green-400 text-green-700'
-            }`}>
-            <h2 className="font-bold text-xl mb-2">
-              {scanResult.verdicts.overall.malicious ? 'MALICIOUS DETECTED' : 'SAFE TO PROCEED'}
-            </h2>
-            <div className="space-y-2">
-              <p>Score: {scanResult.verdicts.overall.score}/100</p>
-              {scanResult.verdicts.overall.malicious && (
-                <p>Threats: {scanResult.verdicts.overall.tags.join(', ')}</p>
-              )}
-              <a
-                href={`https://urlscan.io/result/${scanResult.task.uuid}/`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 underline text-sm"
-              >
-                View full report on <a className='font-semibold'>urlscan.io</a>
-              </a>
+    return (
+        <PopupTemplate>
+            <div className="flex justify-between mb-4">
+                <img src='' alt="earthbuddy logo" className="w-10 mb-1 m-4" />
+                <div className='m-4 text-4xl font-bold' style={{ color: colourOf(4) }} >4 / 5</div>
             </div>
-          </div>
 
-          <div className="mt-auto space-y-3">
-            <Button onClickCallback={resetScanner} title='Scan another URL' />
-            {scanResult.verdicts.overall.malicious && (
-              <Button 
-                onClickCallback={() => chrome.tabs.update({ url: 'about:blank' })}
-                title='Close this tab'
-              />
+            <h2 className="text-lg font-semibold text-[#8B959B] mb-2">How other brands' doing...</h2>
+
+            <div className="flex space-x-10 mb-4 mt-4">
+                {/* Mock data */}
+                {[{ rating: 3 }, { rating: 4 }, { rating: 4.5 }].map((brand, index) => (
+                    <div key={index} className="flex flex-col items-center">
+                        <Rating rating={brand.rating} size={10} />
+                    </div>
+                ))}
+            </div>
+
+            {/* Input for brand name */}
+            <div className="mb-4">
+                <input
+                    type="text"
+                    value={brandName}
+                    onChange={(e) => setBrandName(e.target.value)}
+                    placeholder="Enter brand name"
+                    className="border border-gray-300 rounded p-2 w-full"
+                />
+                <button
+                    onClick={fetchTicker}
+                    className="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-2 w-full"
+                >
+                    Find Ticker
+                </button>
+            </div>
+
+            {/* Display ticker or error */}
+            {ticker && <div className="text-green-600 font-semibold">Ticker Symbol: {ticker}</div>}
+            {error && <div className="text-red-600 font-semibold">{error}</div>}
+
+            <button
+                onClick={() => setShowDetails(!showDetails)}
+                className="text-[#486BF3] font-semibold text-sm flex items-center"
+            >
+                {showDetails ? <ChevronUp size={16} className="mr-1" /> : <ChevronDown size={16} className="mr-1" />}
+                Additional details
+            </button>
+
+            {showDetails && (
+                <div className="mt-4 space-y-4">
+                    {[{ rating: 3, description: 'brand1' }, { rating: 4, description: 'brand2' }, { rating: 4, description: 'brand3' }].map((brand, index) => (
+                        <div key={index} className="flex items-start space-x-4">
+                            <div className='flex flex-col items-center'>
+                                <Rating rating={brand.rating} size={6} />
+                            </div>
+                            <div className="text-left text-sm">
+                                <p className="text-[#8B959B]">
+                                    {brand.description} {brand.description}
+                                </p>
+                                <a href="#" className="text-[#486BF3] font-semibold text-sm block mt-1">Find out more!</a>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             )}
-          </div>
-        </div>
-      )}
-
-      {scanStatus === 'error' && (
-        <div className="flex-1 flex flex-col items-center justify-center">
-          <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 p-4 rounded-lg mb-6">
-            <p>Scan failed. Please try again later.</p>
-          </div>
-          <button
-            onClick={resetScanner}
-            className="w-full py-2 bg-[#4F7BFF] text-white rounded-lg"
-          >
-            Retry Scan
-          </button>
-        </div>
-      )}
-    </PopupTemplate>
-  );
+        </PopupTemplate>
+    );
 };
 
 export default Home;
