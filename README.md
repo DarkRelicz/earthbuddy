@@ -10,19 +10,19 @@ EarthBuddy is a project aimed at promoting environmental awareness and sustainab
 
 ## Installation
 
-   To build the web extension
-    git clone https://github.com/yourusername/earthbuddy.git
-    1. cd to /extension
-    2. Run npm install to install node_modules folder
-    3. Run`npm run build` to build the extension
-    4. /dist folder should be updated
-    
+To build the web extension
+1. git clone https://github.com/yourusername/earthbuddy.git
+2. cd to /extension
+3. Run npm install to install node_modules folder
+4. Run`npm run build` to build the extension
+5. /dist folder should be updated
+
 ## Usage
 
-   To load web extension
-    1. Under browser settings look for manage extensions (for chromium browsers)
-    2. Enable developer mode, should be top right corner
-    3. Click load unpacked and select dist folder
+To load web extension
+1. Under browser settings look for manage extensions (for chromium browsers)
+2. Enable developer mode, should be top right corner
+3. Click load unpacked and select dist folder
 
 ## Contributing
 
