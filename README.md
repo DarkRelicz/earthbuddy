@@ -1,10 +1,10 @@
 # EarthBuddy
 
-The EarthBuddy Chrome Extension helps users make informed, sustainable choices by providing Environmental, Social, and Governance (ESG) ratings for brands.
+The EarthBuddy Chrome Extension helps users make informed, sustainable choices by providing Environmental, Social, and Governance (ESG) risk ratings for brands.
 
 ## Key Features
 
-- Displays the ESG rating of the brand.
+- Displays the ESG risk rating of the brand.
 - Suggests alternative brands with better ESG ratings.
 - Encourages users to choose environmentally and socially responsible options.
 - User-Friendly: User-Centered Design
@@ -29,11 +29,15 @@ To load web extension
 
 EarthBuddy does not collect or store any personal data. All ESG ratings and brand comparisons are processed locally within your browser to ensure user privacy.
 
+## Challenges & Learning Points
+
+- Tickers would not always be accurate
+- Data Gaps in free ESG sources required fallback logic
+
 ## Future Plans
 
 - Add support for more browsers (e.g., Firefox, Safari).
-- Include detailed ESG breakdowns for each brand.
-- Allow users to suggest brands for ESG evaluation.
+- Allow users to contribute brand feedback and sustainability reviews.
 
 ## Contributing
 
