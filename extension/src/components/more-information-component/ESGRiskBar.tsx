@@ -6,19 +6,21 @@ type Category = {
 };
 
 interface ESGRiskBarProps {
-  score: number;
+  score: number | null;
 }
 
 const ESGRiskBar: React.FC<ESGRiskBarProps> = ({ score }) => {
   const categories: Category[] = [
-    { label: "Negligible", range: "0–10" },
-    { label: "Low", range: "10–20" },
-    { label: "Medium", range: "20–30" },
-    { label: "High", range: "30–40" },
+    { label: "Negligible", range: "0-10" },
+    { label: "Low", range: "10-20" },
+    { label: "Medium", range: "20-30" },
+    { label: "High", range: "30-40" },
     { label: "Severe", range: "40+" },
   ];
 
-  const getCategory = (score: number): string => {
+  const getCategory = (score: number | null): string => {
+    if (score == null) return "unknown error";
+    if (score < 0) return "missing data";
     if (score <= 10) return "Negligible";
     if (score <= 20) return "Low";
     if (score <= 30) return "Medium";
