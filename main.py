@@ -18,7 +18,7 @@ def get_ticker():
     response = client.models.generate_content(
         model="gemini-2.0-flash",
         contents=f"What is the stock ticker symbol for {brand_name} or its parent company? "
-                 "Return only the ticker symbol, without any additional text."
+                 "Return only the ticker symbol on yfinance, without any additional text."
     )
     ticker = response.text.strip()
 
@@ -30,7 +30,7 @@ def get_ticker():
             return jsonify({
                 "brand_name": brand_name,
                 "ticker": ticker,
-                "esg_scores": "No Data",
+                "esg_scores": "No ESG data",
                 "grade": None,
                 "image_url": image_url
             })
