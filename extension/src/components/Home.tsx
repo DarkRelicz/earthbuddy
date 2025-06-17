@@ -6,7 +6,6 @@ import PopupTemplate from './template/PopupTemplate';
 import Rating from './atoms/Rating';
 
 const Home: React.FC = () => {
-    const [currentUrl, setCurrentUrl] = useState<string>('');
     const [showDetails, setShowDetails] = useState(false);
     const [brandName, setBrandName] = useState<string>(''); // Input for brand name
     const [ticker, setTicker] = useState<string | null>(null); // Ticker result
@@ -14,23 +13,26 @@ const Home: React.FC = () => {
 
     // Retrieve current URL and infer brand name
     useEffect(() => {
-        const getCurrentUrl = async () => {
+        const getBrandName = async () => {
             try {
                 const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
                 if (tab?.url) {
-                    setCurrentUrl(tab.url);
-
+                    console.log(tab.url);
                     // Extract the domain and infer the brand name
-                    const url = new URL(tab.url);
-                    const domain = url.hostname.replace('www.', ''); // Remove 'www.'
-                    const brand = domain.split('.')[0]; // Get the main part of the domain
-                    setBrandName(brand.charAt(0).toUpperCase() + brand.slice(1)); // Capitalize the first letter
+                    const domainRegex = /(?:https?:\/\/)?(?:.*\.)?([^.\/]+)\.[^.\/]+(?:\/|$)/;
+                    const match = tab.url.match(domainRegex);
+                    if (match && match[1]) {
+                        const brand = match[1];
+                        console.log(match);
+                        console.log(brand);
+                        setBrandName(brand.charAt(0).toUpperCase() + brand.slice(1)); // Capitalize the first letter
+                    }      
                 }
             } catch (err) {
                 console.error('Error getting URL:', err);
             }
         };
-        getCurrentUrl();
+        getBrandName();
     }, []);
 
     // Fetch ticker from backend
