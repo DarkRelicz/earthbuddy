@@ -58,25 +58,27 @@ const Home: React.FC = () => {
 
   return (
     <PopupTemplate>
-      <div className="flex items-start justify-between mb-4">
-        <img src="" alt="earthbuddy logo" className="w-10 m-4" />
-        <div className="m-4 flex items-center space-x-4">
-          <div className="text-4xl font-bold" style={{ color: colourOf(4) }}>4 / 5</div>
-          <button
-            disabled={!ticker}
-            onClick={() =>
-              ticker &&
-              window.open(`https://www.responsibilityreports.com/Companies?search=${ticker}`, '_blank')
-            }
-            className={`text-sm font-semibold px-4 py-2 rounded ${
-              ticker
-                ? 'bg-transparent text-blue-600 hover:underline'
-                : 'bg-transparent text-gray-400 cursor-not-allowed'
-            }`}
-          >
-            Find Out More
-          </button>
+      <div className="flex items-center justify-between mb-4 w-full">
+        {/* Left: Logo */}
+        <img src="" alt="earthbuddy logo" className="w-10 h-10 m-2" />
+
+        {/* Center: Rating */}
+        <div className="text-4xl font-bold ml-12" style={{ color: colourOf(4) }}>
+          4 / 5
         </div>
+
+        {/* Right: Button */}
+        <button
+          disabled={!ticker}
+          onClick={() =>
+            ticker && window.open(`https://www.responsibilityreports.com/Companies?search=${ticker}`, '_blank')
+          }
+          className={`text-xs font-semibold px-3 py-1 rounded m-2 ${
+            ticker ? 'text-blue-600 hover:underline' : 'text-gray-400 cursor-not-allowed'
+          }`}
+        >
+          Find Out More
+        </button>
       </div>
 
       {/* Input for brand name override */}
