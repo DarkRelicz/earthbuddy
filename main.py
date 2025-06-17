@@ -21,6 +21,10 @@ def get_ticker():
                  "Return only the ticker symbol, without any additional text."
     )
     ticker = response.text.strip()
+    
+    # Handle cases where the response is empty or invalid
+    if not ticker.isalnum() or len(ticker) > 10:
+        return jsonify({"error": f"No valid ticker symbol found for brand: {brand_name}"}), 404
 
     # Fetch ESG score
     try:
