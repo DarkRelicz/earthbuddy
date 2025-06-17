@@ -19,8 +19,7 @@ const ESGRiskBar: React.FC<ESGRiskBarProps> = ({ score }) => {
   ];
 
   const getCategory = (score: number | null): string => {
-    if (score == null) return "unknown error";
-    if (score < 0) return "missing data";
+    if (score === null || typeof score !== "number" || score < 0) return "missing data"; // Ensure score is a number
     if (score <= 10) return "Negligible";
     if (score <= 20) return "Low";
     if (score <= 30) return "Medium";

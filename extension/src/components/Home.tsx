@@ -103,7 +103,7 @@ const Home: React.FC = () => {
                 <h2 className="text-lg font-semibold text-[#12364A] mb-6">Sustainability Report</h2>
             </div>
 
-            <div className="flex justify-between mb-3">
+            <div className="flex justify-between mb-3 items-center">
                 {esgScore == null ? (
                     <>
                         <img src='img/EarthBuddyLogo.png' alt="earthbuddy logo" className="w-20 h-20" />
