@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { colourOf } from './atoms/Functions';
 import { ChevronDown, ChevronUp } from "lucide-react";
-
 import ESGRiskBar from './more-information-component/ESGRiskBar';
 import PopupTemplate from './template/PopupTemplate';
 import Rating from './atoms/Rating';
@@ -105,9 +104,19 @@ const Home: React.FC = () => {
                 <img src='/img/EarthBuddyLogo.png' alt="earthbuddy logo" className="w-20 h-20" />
                 {esgScore == null ? (
                     <div className='m-4 text-4xl font-semibold text-[#8B959B]'>Loading...</div>
-                ) : 
-                (<div className='m-4 text-4xl font-bold' style={{ color: colourOf(esgScore) }} >{esgScore}</div>)}
-                
+                ) :
+                    (<div className='m-4 text-4xl font-bold' style={{ color: colourOf(esgScore) }} >{esgScore}</div>)}
+                {/* Right: Button */}
+                <button
+                    disabled={!ticker}
+                    onClick={() =>
+                        ticker && window.open(`https://www.responsibilityreports.com/Companies?search=${ticker}`, '_blank')
+                    }
+                    className={`text-xs font-semibold px-3 py-1 rounded m-2 ${ticker ? 'text-blue-600 hover:underline' : 'text-gray-400 cursor-not-allowed'
+                        }`}
+                >
+                    Find Out More
+                </button>
             </div>
 
             <button
