@@ -55,18 +55,6 @@ const Home: React.FC = () => {
         }
     };
 
-    useEffect(() => {
-        getBrandName();
-    }, []);
-
-    useEffect(() => {
-        if (brandName) {
-            fetchESGScores();
-            fetchTicker();
-        }
-    }, [brandName]);
-
-
     // Fetch ticker from backend
     const fetchTicker = async () => {
         setTicker(null); // Reset ticker
@@ -102,13 +90,7 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         if (brandName) {
-            fetchTicker();
             fetchESGScores();
-        }
-    }, [brandName]);
-
-    useEffect(() => {
-        if (brandName) {
             fetchTicker();
         }
     }, [brandName]);
