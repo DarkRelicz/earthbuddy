@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import { colourOf } from './atoms/Functions';
 import { ChevronDown, ChevronUp } from "lucide-react";
 import ESGRiskBar from './more-information-component/ESGRiskBar';
@@ -12,6 +12,7 @@ const Home: React.FC = () => {
     const [ticker, setTicker] = useState<string | null>(null); // Ticker result
     const [esgScore, setEsgScore] = useState<number | null>(null);
     const [brandLogo, setBrandLogo] = useState<string>("");
+    const [alternatives, setAlternatives] = useState<any[]>([]);
 
     // Retrieve current URL and infer brand name
     const getBrandName = async () => {
@@ -60,6 +61,39 @@ const Home: React.FC = () => {
         }
     };
 
+    const fetchAlternatives = async () => {
+    if (!brandName || esgScore == null) return;
+
+    try {
+        const response = await fetch(`https://gemini-connect.onrender.com/get_ticker?brand_name=${encodeURIComponent(brandName)}&esg_score=${esgScore}`);
+        if (!response.ok) throw new Error("Failed to fetch alternatives");
+
+        const data = await response.json();
+        setAlternatives(data.alternatives || []);
+        console.log(alternatives)
+    } catch (error) {
+        console.error("Error fetching Gemini alternatives:", error);
+        setAlternatives([])
+    }
+};
+
+
+    useEffect(() => {
+        getBrandName();
+    }, []);
+
+    useEffect(() => {
+        if (brandName) {
+            fetchESGScores();
+        }
+    }, [brandName]);
+
+    useEffect(() => {
+    if (typeof esgScore === "number" && esgScore >= 0) {
+        fetchAlternatives();
+    }
+    }, [esgScore]);
+
     // Fetch ticker from backend
     const fetchTicker = async () => {
         setTicker(null); // Reset ticker
@@ -88,18 +122,6 @@ const Home: React.FC = () => {
             }
         }
     };
-
-    useEffect(() => {
-        getBrandName();
-    }, []);
-
-    useEffect(() => {
-        if (brandName) {
-            fetchTicker();
-            fetchESGScores();
-        }
-    }, [brandName]);
-
 
     return (
         <PopupTemplate>
@@ -157,12 +179,25 @@ const Home: React.FC = () => {
             <h2 className="text-lg font-semibold text-[#8B959B] mb-2 mt-4">How other brands' doing...</h2>
 
             <div className="flex space-x-10 mb-4 mt-4">
-                {/* Mock data */}
-                {[{ rating: 3 }, { rating: 4 }, { rating: 4.5 }].map((brand, index) => (
-                    <div key={index} className="flex flex-col items-center">
-                        <Rating rating={brand.rating} size={10} />
+                {alternatives.length > 0 ? (
+                    alternatives.map((brand, index) => {
+                    // Convert ESG score (lower is better) to 1–5 star scale (invert scale)
+                    // const rating = 5 - Math.min(Math.max(brand.esg_score / 10, 0), 5); // Normalize to 0–5, then invert
+
+                    return (
+                        <div key={index} className="flex flex-col items-center">
+                        <Rating rating={brand.esg_score} size={10} />
+                        </div>
+                    );
+                    })
+                ) : (
+                    // Optional fallback while waiting
+                    [1, 2, 3].map((_, index) => (
+                    <div key={index} className="flex flex-col items-center text-gray-300">
+                        <Rating rating={-1} size={10} />
                     </div>
-                ))}
+                    ))
+                )}
             </div>
 
             <button
@@ -175,19 +210,25 @@ const Home: React.FC = () => {
 
             {showDetails && (
                 <div className="mt-4 space-y-4">
-                    {[{ rating: 3, description: 'brand1' }, { rating: 4, description: 'brand2' }, { rating: 4, description: 'brand3' }].map((brand, index) => (
-                        <div key={index} className="flex items-start space-x-4">
-                            <div className='flex flex-col items-center'>
-                                <Rating rating={brand.rating} size={6} />
+                    {alternatives.length > 0 ? (
+                        alternatives.map((brand, index) => (
+                            <div key={index} className="flex items-start space-x-4">
+                                <div className='flex flex-col items-center'>
+                                    <Rating rating={brand.esg_score} size={6} />
+                                </div>
+                                <div className="text-left text-sm">
+                                    <p className="text-[#8B959B]">
+                                        <strong>{brand.brand_name}</strong> – ESG: {brand.esg_score}
+                                    </p>
+                                    <a href={brand.homepage} target="_blank" rel="noreferrer" className="text-[#486BF3] font-semibold text-sm block mt-1">
+                                        Visit Homepage →
+                                    </a>
+                                </div>
                             </div>
-                            <div className="text-left text-sm">
-                                <p className="text-[#8B959B]">
-                                    {brand.description} {brand.description}
-                                </p>
-                                <a href="#" className="text-[#486BF3] font-semibold text-sm block mt-1">Find out more!</a>
-                            </div>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        <p className="text-sm text-gray-500">No alternatives found yet.</p>
+                    )}
                 </div>
             )}
         </PopupTemplate>
