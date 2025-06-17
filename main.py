@@ -30,7 +30,7 @@ def get_ticker():
             return jsonify({
                 "brand_name": brand_name,
                 "ticker": ticker,
-                "esg_scores": None,
+                "esg_scores": "No Data",
                 "grade": None,
                 "image_url": image_url
             })
