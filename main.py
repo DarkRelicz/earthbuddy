@@ -24,9 +24,19 @@ def get_ticker():
     # Fetch ESG score
     try:
         esg_scores = get_esg_scores(ticker)
-        if not esg_scores:
+        if esg_scores is None:
             return jsonify({"brand_name": brand_name, "ticker": ticker, "esg_scores": "No ESG data available"})
-        return jsonify({"brand_name": brand_name, "ticker": ticker, "esg_scores": esg_scores})
+        
+        # Normalize ESG score to 1 to 5 scale
+        grade = round((esg_scores / 40) * 5)
+        if grade > 5:
+            normalized_esg = 5
+        elif grade < 1:
+            normalized_esg = 1
+        else:
+            normalized_esg = grade
+            
+        return jsonify({"brand_name": brand_name, "ticker": ticker, "esg_scores": esg_scores, "grade": normalized_esg})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
