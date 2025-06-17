@@ -1,28 +1,21 @@
 import requests
 import yfinance as yf
 
-def get_ticker_from_yahoo(company_name: str) -> str | None:
-    try:
-        url = "https://query2.finance.yahoo.com/v1/finance/search"
-        params = {"q": company_name}
-        headers = {"User-Agent": "Mozilla/5.0"}
+def get_esg_scores(ticker: str):
+    """
+    Fetch ESG scores for a given ticker symbol using yfinance.
 
-        res = requests.get(url, headers=headers, params=params)
-        data = res.json()
+    Args:
+        ticker (str): The stock ticker symbol.
 
-        for item in data.get("quotes", []):
-            if item.get("quoteType") == "EQUITY":
-                return item.get("symbol")
-        return None
-    except Exception:
-        return None
-
-def get_esg_data_from_yfinance(ticker: str) -> dict | None:
+    Returns:
+        dict: A dictionary containing ESG scores, or None if no data is available.
+    """
     try:
         stock = yf.Ticker(ticker)
-        info = stock.sustainability
-        if info is not None:
-            return info.to_dict()
-        return None
-    except Exception:
-        return None
+        esg_data = stock.sustainability
+        if esg_data is None:
+            return None
+        return esg_data.to_dict()  # Convert pandas DataFrame to dictionary
+    except Exception as e:
+        raise Exception(f"Failed to fetch ESG scores for ticker '{ticker}': {e}")

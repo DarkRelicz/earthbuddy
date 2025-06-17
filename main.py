@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from google import genai
-from utils.yfinance_utils import get_esg_scores 
+from utils.yfinance_utils import get_esg_scores
 
 app = Flask(__name__)
 
