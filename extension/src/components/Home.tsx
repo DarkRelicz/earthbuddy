@@ -144,7 +144,7 @@ const Home: React.FC = () => {
                         onClick={() => window.open('https://www.home.saxo/en-sg/content/articles/esg/how-to-read-an-esg-rating-25042024', '_blank')}
                         className="text-[#486BF3] font-semibold text-sm block w-fit mx-auto mt-1"
                     >
-                        Find out more about ESG!
+                        Find out more about ESG risk rating!
                     </button>
                 </div>
             )}
