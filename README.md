@@ -18,13 +18,13 @@ There are two ways to prepare the web extension
 2. Building it yourself
 
 To use the prepacked folder
-1. `git clone https://github.com/yourusername/earthbuddy.git`
+1. `git clone https://github.com/DarkRelicz/earthbuddy.git`
 2. `cd` to `/extension`
 3. Unzip `earthbuddy-extension.zip`
 4. You should see a `dist` folder within  
 
 To build the web extension 
-1. `git clone https://github.com/yourusername/earthbuddy.git`
+1. `git clone https://github.com/DarkRelicz/earthbuddy.git`
 2. `cd` to `/extension`
 3. Run `npm install` to install node_modules folder
 4. Run`npm run build` to build the extension
