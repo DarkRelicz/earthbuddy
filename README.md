@@ -16,7 +16,7 @@ The **EarthBuddy Chrome** Extension helps users make informed, sustainable choic
 To build the web extension
 1. git clone https://github.com/yourusername/earthbuddy.git
 2. cd to /extension
-3. Run npm install to install node_modules folder
+3. Run `npm install` to install node_modules folder
 4. Run`npm run build` to build the extension
 5. At this point, you should see /dist folder been updated
 
