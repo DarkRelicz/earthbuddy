@@ -6,7 +6,7 @@ from utils.getlogo import fetch_image_url
 app = Flask(__name__)
 
 # Initialize the Google Generative AI client
-client = genai.Client(api_key="AIzaSyDaPY9gtw1kxO7yDXeyfc-du51tpdlYsGg")  # Replace with your actual API key
+client = genai.Client(api_key="")  # Replace with your actual API key
 
 @app.route("/get_ticker", methods=["GET"])
 def get_ticker():

@@ -126,8 +126,8 @@ const Home: React.FC = () => {
 
     return (
         <PopupTemplate>
-            <div className='flex flex-row items-center justify-center inline-flex mb-6'>
-                <img src='img/EarthBuddyLogo.png' alt="earthbuddy logo" className="w-11 mr-4" />
+            <div className='flex flex-row items-center justify-center mb-6 space-x-2'>
+                <img src='img/EarthBuddyLogo.png' alt="earthbuddy logo" className="w-[80px] h-[80px] object-contain" />
                 <h2 className="text-lg font-semibold text-[#12364A]">Sustainability Report</h2>
             </div>
 
@@ -208,13 +208,14 @@ const Home: React.FC = () => {
                             {alternatives.length > 0 ? (
                                 <div className='space-y-4'>
                                     {alternatives.map((brand, index) => (
-                                        <div key={index} className="flex items-start">
-                                            <div className='w-1/4 pr-4 flex flex-col items-center justify-center'>
-                                                <Rating rating={brand.esg_score} imageUrl={brand.image_url} size={44} />
+                                        <div key={index} className="flex items-center space-x-4 p-2 border-b border-gray-200 last:border-0">
+                                            <div className='w-1/4 flex flex-col items-center justify-center'>
+                                                <Rating rating={brand.esg_score} imageUrl={brand.image_url} size={49} />
                                             </div>
                                             <div className="w-3/4 text-left text-sm">
-                                                <p className="text-[#8B959B] mb-1">
-                                                    <strong>{brand.brand_name}</strong> - ESG: {brand.esg_score}
+                                                <p className="text-[#8B959B]">
+                                                    <strong>{brand.brand_name}</strong>
+                                                    <br />ESG: {brand.esg_score}
                                                 </p>
                                                 <a href={brand.homepage} target="_blank" rel="noreferrer" className="text-[#486BF3] font-semibold text-sm block mt-1">
                                                     Visit Homepage →
