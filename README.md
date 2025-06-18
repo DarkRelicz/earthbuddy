@@ -16,7 +16,7 @@ The **EarthBuddy Chrome** Extension helps users make informed, sustainable choic
 There are two ways to prepare the web extension
 1. Using our prepacked `earthbuddy-extension.zip` folder or
 2. Building it yourself
-
+    
 1. To use the prepacked folder
     1. `git clone https://github.com/DarkRelicz/earthbuddy.git`
     2. Unzip `earthbuddy-extension.zip`
