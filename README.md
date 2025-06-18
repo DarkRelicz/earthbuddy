@@ -14,17 +14,16 @@ The **EarthBuddy Chrome** Extension helps users make informed, sustainable choic
 ## Installation
 
 There are two ways to prepare the web extension
-1. Using our prepacked `earthbuddy-extension.zip` folder
+1. Using our prepacked `earthbuddy-extension.zip` folder or
 2. Building it yourself
 
 To use the prepacked folder
-1. `git clone https://github.com/yourusername/earthbuddy.git`
-2. `cd` to `/extension`
-3. Unzip `earthbuddy-extension.zip`
-4. You should see a `dist` folder within  
+1. `git clone https://github.com/DarkRelicz/earthbuddy.git`
+2. Unzip `earthbuddy-extension.zip`
+3. You should see a `earthbuddy-extension` folder within  
 
 To build the web extension 
-1. `git clone https://github.com/yourusername/earthbuddy.git`
+1. `git clone https://github.com/DarkRelicz/earthbuddy.git`
 2. `cd` to `/extension`
 3. Run `npm install` to install node_modules folder
 4. Run`npm run build` to build the extension
@@ -36,7 +35,7 @@ To build the web extension
 To load web extension
 1. Under browser settings look for `manage extensions` (for chromium browsers)
 2. Enable `developer mode`, should be top right corner
-3. Click `load unpacked`, browse to your `dist` folder
+3. Click `load unpacked`, browse to `earthbuddy-extension` or `dist` folder, depending on which installation you chose
 
 ## Tech Stack
 
