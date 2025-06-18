@@ -13,19 +13,30 @@ The **EarthBuddy Chrome** Extension helps users make informed, sustainable choic
 
 ## Installation
 
-To build the web extension
-1. git clone https://github.com/yourusername/earthbuddy.git
-2. cd to /extension
-3. Run npm install to install node_modules folder
+There are two ways to prepare the web extension
+1. Using our prepacked `earthbuddy-extension.zip` folder
+2. Building it yourself
+
+To use the prepacked folder
+1. `git clone https://github.com/yourusername/earthbuddy.git`
+2. `cd` to `/extension`
+3. Unzip `earthbuddy-extension.zip`
+4. You should see a `dist` folder within  
+
+To build the web extension 
+1. `git clone https://github.com/yourusername/earthbuddy.git`
+2. `cd` to `/extension`
+3. Run `npm install` to install node_modules folder
 4. Run`npm run build` to build the extension
-5. At this point, you should see /dist folder been updated
+5. At this point, you should see `/dist` folder been updated
+
 
 ## Usage
 
 To load web extension
-1. Under browser settings look for manage extensions (for chromium browsers)
-2. Enable developer mode, should be top right corner
-3. Click load unpacked and select dist folder
+1. Under browser settings look for `manage extensions` (for chromium browsers)
+2. Enable `developer mode`, should be top right corner
+3. Click `load unpacked`, browse to your `dist` folder
 
 ## Tech Stack
 
@@ -41,7 +52,7 @@ To load web extension
 
 ```text
 .
-├── client/                      # Frontend (Chrome extension)
+├── extension/                   # Frontend (Chrome extension)
 │   ├── assets/                  # Static assets (icons, images)
 │   ├── components/              # Reusable UI components
 │   ├── atoms/                   # Utility functions (e.g., Rating, Functions)
@@ -50,8 +61,8 @@ To load web extension
 │   ├── index.html               # HTML entry point
 │   └── manifest.json            # Chrome extension configuration
 │
-├── server/                      # Backend (Flask + Gemini + ESG)
-│   ├── app.py                   # Main Flask server
+├── ticker_to_esg/               # Backend (Flask + Gemini + ESG)
+│   ├── main.py                  # Main Flask server
 │   └── utils/                   # Utility modules
 │       ├── getLogo.py           # Fetch brand logos using Brandfetch
 │       └── yfinance.py          # Fetch ESG scores via yfinance
