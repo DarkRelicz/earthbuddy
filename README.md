@@ -35,7 +35,9 @@ To build the web extension
 To load web extension
 1. Under browser settings look for `manage extensions` (for chromium browsers)
 2. Enable `developer mode`, should be top right corner
-3. Click `load unpacked`, browse to `earthbuddy-extension` or `dist` folder, depending on which installation you chose
+3. Click `load unpacked`
+- If you are using the zip version, select the `earthbuddy-extension` folder 
+- If you are using the built version, navigate into `/extension` and select the `dist` folder 
 
 ## Tech Stack
 
